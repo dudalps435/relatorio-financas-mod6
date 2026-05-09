@@ -1,33 +1,40 @@
 // App.js
-import React, { useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { TabRoutes } from './routes/TabRoutes';
 import { TransacoesProvider } from './context/TransacoesContext';
-// BoasVindasScreen será criada no Passo 9
 import { BoasVindasScreen } from './screens/BoasVindasScreen';
+import {
+  PrimeiroAcessoProvider,
+  usePrimeiroAcesso,
+} from './context/PrimeiroAcessoContext';
 
-export default function App() {
-  // Controla qual "árvore" de componentes é renderizada (navegação condicional, Passo 9)
-  const [primeiroAcesso, setPrimeiroAcesso] = useState(true);
+function ConteudoApp() {
+  const { primeiroAcesso, carregando, concluir } = usePrimeiroAcesso();
 
-  // Se for o primeiro acesso, mostra a tela de boas-vindas
-  // fora do NavigationContainer — ela não precisa de navegação
+  // Enquanto lê o AsyncStorage, evita o flash da tela de boas-vindas
+  if (carregando) return null;
+
   if (primeiroAcesso) {
-    return (
-      <SafeAreaProvider>
-        <BoasVindasScreen onConcluir={() => setPrimeiroAcesso(false)} />
-      </SafeAreaProvider>
-    );
+    return <BoasVindasScreen onConcluir={concluir} />;
   }
 
   return (
+    <TransacoesProvider>
+      <NavigationContainer>
+        <TabRoutes />
+      </NavigationContainer>
+    </TransacoesProvider>
+  );
+}
+
+export default function App() {
+  return (
     <SafeAreaProvider>
-      <TransacoesProvider>
-        <NavigationContainer>
-          <TabRoutes />
-        </NavigationContainer>
-      </TransacoesProvider>
+      <PrimeiroAcessoProvider>
+        <ConteudoApp />
+      </PrimeiroAcessoProvider>
     </SafeAreaProvider>
   );
 }
