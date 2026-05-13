@@ -47,6 +47,11 @@
           "cameraPermission": "Permita o acesso à câmera para fotografar comprovantes."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "6b63d729-9bae-45b4-aca8-7d8f365988ff"
+      }
+    }
   }
 }
