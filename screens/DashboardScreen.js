@@ -10,12 +10,12 @@ import { setStatusBarStyle } from 'expo-status-bar';
 import { Ionicons } from '@expo/vector-icons';
 import { CartaoSaldo } from '../components/CartaoSaldo';
 import { CardsResumo } from '../components/CardsResumo';
-import { CartaoCotacoes } from '../components/CartaoCotacoes';
+import { CartaoCotacoes } from '../components/CartaoCotacoes';   // ← NOVO
 import { ItemTransacao } from '../components/ItemTransacao';
 import { useTransacoes } from '../context/TransacoesContext';
 import { cores, espacamento } from '../theme';
 
-export function DashboardScreen({ navigation }) {
+export function DashboardScreen({ navigation, route }) {
   const { transacoes, saldo, receitas, despesas, carregando, removerTransacao } = useTransacoes();
 
   // Mantém o status bar claro enquanto o Dashboard está em foco (cabeçalho azul) — vindo da Aula 3
@@ -47,10 +47,10 @@ export function DashboardScreen({ navigation }) {
     );
   }
 
+  // Renderiza o Dashboard: cabeçalho, cartão de saldo, resumo, cotações do dia e lista de transações
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-        {/* Cabeçalho */}
         <View style={styles.cabecalho}>
           <Text style={styles.titulo}>Minhas Finanças</Text>
           <Text style={styles.subtitulo}>
@@ -58,23 +58,18 @@ export function DashboardScreen({ navigation }) {
           </Text>
         </View>
 
-        {/* Saldo */}
         <CartaoSaldo
           saldo={saldo}
           mes={new Date().toLocaleDateString('pt-BR', { month: 'long' })}
         />
 
-        {/* Resumo */}
         <CardsResumo receitas={receitas} despesas={despesas} />
 
-        {/* Cotações */}
-        <CartaoCotacoes/>
+        <CartaoCotacoes />
 
-        {/* Lista */}
         <View style={styles.secao}>
           <Text style={styles.tituloSecao}>Transações Recentes</Text>
 
-          {/* Tela vazia */}
           {transacoes.length === 0 ? (
             <View style={styles.vazio}>
               <Ionicons name="wallet-outline" size={64} color="#bdc3c7" />
