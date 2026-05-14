@@ -65,4 +65,3 @@ const styles = StyleSheet.create({
   separador: { width: 1, height: 36, backgroundColor: '#eee' },
   erro: { fontSize: 13, color: cores.despesa, textAlign: 'center' },
 });
-y
